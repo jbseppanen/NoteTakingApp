@@ -2,8 +2,6 @@ package com.lambdaschool.notetaker;
 
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -11,23 +9,31 @@ import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    final int LAYOUT_SPAN_COUNT = 2;
     public static SharedPreferences preferences;
 
     private Context context;
-    private LinearLayout listLayout;
+    private Activity activity;
+    //    private LinearLayout listLayout;
     private NoteViewModel viewModel;
 
+    private StaggeredGridLayoutManager layoutManager;
+    private RecyclerView listView;
+    public NoteListAdapter listAdapter;
+    //List Adaptor
+
+
     public static final int EDIT_REQUEST_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
 //        notes = new ArrayList<>();
         context = this;
-        listLayout = findViewById(R.id.list_layout);
+        activity = this;
+//        listLayout = findViewById(R.id.list_layout);
 
         viewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
 
@@ -45,12 +52,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable ArrayList<Note> notes) {
                 if (notes != null) {
-                    refreshListView(notes);
+//                    refreshListView(notes);
+                    listAdapter = new NoteListAdapter(notes, activity);
+                    listView.setAdapter(listAdapter);
+
                 }
 
             }
         };
         viewModel.getNotesList().observe(this, observer);
+
 
         findViewById(R.id.add_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(getLocalClassName(), notes.toString());*/
             }
         });
+
+        listView = findViewById(R.id.note_recycler_view);
+        layoutManager = new StaggeredGridLayoutManager(LAYOUT_SPAN_COUNT, StaggeredGridLayoutManager.VERTICAL);
+        listView.setLayoutManager(layoutManager);
+        //create our list adaptor and attach
     }
 
     private TextView getDefaultTextView(final Note note) {
@@ -86,11 +102,11 @@ public class MainActivity extends AppCompatActivity {
         return textView;
     }
 
-    private void refreshListView( ArrayList<Note> notes) {
-        listLayout.removeAllViews();
+    private void refreshListView(ArrayList<Note> notes) {
+/*        listLayout.removeAllViews();
         for (Note note : notes) {
             listLayout.addView(getDefaultTextView(note));
-        }
+        }*/
     }
 
     @Override
