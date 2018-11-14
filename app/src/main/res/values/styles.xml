@@ -6,6 +6,18 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="card_corner_radius">@dimens/card_corner_radius"</item>
+        <item name="card_layout_margin">@dimens/card_layout_margin"</item>
+        <item name="note_title_text_size">@dimens/note_title_text_size"</item>
+        <item name="note_content_text_size">@dimens/note_content_text_size"</item>
     </style>
+
+    <style name="AppThemeRound" parent="AppTheme">
+        <item name="colorPrimary">@color/reddishcolorPrimary</item>
+        <item name="colorPrimaryDark">@color/reddishcolorPrimaryDark</item>
+        <item name="colorAccent">@color/reddishcolorAccent</item>
+    </style>
+
 
 </resources>

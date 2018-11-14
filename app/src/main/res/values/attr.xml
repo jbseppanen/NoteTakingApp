@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="card_corner_radius" format="reference"/>
+    <attr name="card_layout_margin" format="reference"/>
+    <attr name="note_title_text_size" format="reference"/>
+    <attr name="note_content_text_size" format="reference"/>
+</resources>
