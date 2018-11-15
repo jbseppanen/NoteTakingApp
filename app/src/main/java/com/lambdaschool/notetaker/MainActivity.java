@@ -1,12 +1,18 @@
 package com.lambdaschool.notetaker;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -23,13 +29,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Context context;
     private Activity activity;
-    //    private LinearLayout listLayout;
     private NoteViewModel viewModel;
 
     private StaggeredGridLayoutManager layoutManager;
     private RecyclerView listView;
     public NoteListAdapter listAdapter;
-    //List Adaptor
 
 
     public static final int EDIT_REQUEST_CODE = 1;
@@ -41,10 +45,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         preferences = this.getPreferences(Context.MODE_PRIVATE);
 
-//        notes = new ArrayList<>();
         context = this;
         activity = this;
-//        listLayout = findViewById(R.id.list_layout);
 
         viewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
 
@@ -71,42 +73,13 @@ public class MainActivity extends AppCompatActivity {
 
                 intent.putExtra(EditActivity.EDIT_NOTE_KEY, newNote);
                 startActivityForResult(intent, EDIT_REQUEST_CODE);
-
-                /*notes.add(System.currentTimeMillis());
-                int noteIndex = notes.size() - 1;
-                listLayout.addView(getDefaultTextView(notes.get(noteIndex).toString()));
-                Log.i(getLocalClassName(), notes.toString());*/
             }
         });
 
         listView = findViewById(R.id.note_recycler_view);
         layoutManager = new StaggeredGridLayoutManager(LAYOUT_SPAN_COUNT, StaggeredGridLayoutManager.VERTICAL);
         listView.setLayoutManager(layoutManager);
-        //create our list adaptor and attach
-    }
 
-    private TextView getDefaultTextView(final Note note) {
-        TextView textView = new TextView(context);
-        textView.setText(note.getTitle());
-        textView.setTextSize(24);
-        textView.setPadding(10, 10, 10, 10);
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, EditActivity.class);
-                intent.putExtra(EditActivity.EDIT_NOTE_KEY, note);
-                startActivityForResult(intent, EDIT_REQUEST_CODE);
-            }
-        });
-
-        return textView;
-    }
-
-    private void refreshListView(ArrayList<Note> notes) {
-/*        listLayout.removeAllViews();
-        for (Note note : notes) {
-            listLayout.addView(getDefaultTextView(note));
-        }*/
     }
 
     @Override
@@ -116,22 +89,28 @@ public class MainActivity extends AppCompatActivity {
             if (requestCode == EDIT_REQUEST_CODE) {
                 if (data != null) {
                     Note returnedNote = (Note) data.getSerializableExtra(EditActivity.EDIT_NOTE_KEY);
-
-/*                    boolean foundNote = false;
-                    for(int i = 0; i < notes.size(); ++i) {
-                        if(notes.get(i).getId() == returnedNote.getId()) {
-                            // this created a bug with an infinite loop, with each loop,
-                            // an element is inserted into the beginning of the arraylist
-//                            notes.add(i, returnedNote);
-                            notes.set(i, returnedNote);
-                            foundNote = true;
-                        }
-                    }
-                    if(!foundNote) {
-                        notes.add(returnedNote);
-                    }
-                    refreshListView();*/
                     viewModel.addNote(returnedNote);
+                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    String channelId = getPackageName() + ".new_note";
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        CharSequence name = "New Note Channel";
+                        String description = "New note created!";
+                        int importance = NotificationManager.IMPORTANCE_HIGH;
+                        NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+                        channel.setDescription(description);
+
+                        notificationManager.createNotificationChannel(channel);
+                    }
+
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
+                            .setPriority(NotificationManager.IMPORTANCE_HIGH)
+                            .setContentTitle(returnedNote.getTitle())
+                            .setContentText(returnedNote.getContent())
+                            .setColor(context.getResources().getColor(R.color.colorPrimary))
+                            .setSmallIcon(android.R.drawable.ic_dialog_alert);
+                    notificationManager.notify(1, builder.build());
+
+
                 }
             }
         }
