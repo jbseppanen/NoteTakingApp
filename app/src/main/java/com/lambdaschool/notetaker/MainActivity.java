@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.audiofx.Equalizer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         activity = this;
 //        listLayout = findViewById(R.id.list_layout);
+
+        findViewById(R.id.settings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         viewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
 

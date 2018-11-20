@@ -1,9 +1,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreference
-        android:defaultValue="true"
-        android:key="example_switch"
-        android:summary=redd"
+        android:defaultValue="false"
+        android:key="@string/theme_switch_key"
         android:title="Reddish Theme" />
 
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->

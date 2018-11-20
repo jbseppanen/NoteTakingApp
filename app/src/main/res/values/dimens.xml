@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimens name="element_layout_margin">10dp</dimens>
-    <dimens name="card_corner_radius_small">4dp</dimens>
-    <dimens name="card_corner_radius_large">12dp</dimens>
-    <dimens name="card_layout_margin">5dp</dimens>
-    <dimens name="note_title_text_size">16sp</dimens>
-    <dimens name="note_content_text_size">12sp</dimens>
+    <dimen name="element_layout_margin">10dp</dimen>
+    <dimen name="card_corner_radius_small">4dp</dimen>
+    <dimen name="card_corner_radius_large">12dp</dimen>
+    <dimen name="card_layout_margin">5dp</dimen>
+    <dimen name="note_title_text_size">16sp</dimen>
+    <dimen name="note_content_text_size">12sp</dimen>
 
 </resources>

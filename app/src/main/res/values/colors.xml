@@ -3,8 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-
-    <color name="reddishcolorPrimary">#008577</color>
-    <color name="reddishcolorPrimaryDark">#00574B</color>
-    <color name="reddishcolorAccent">#D81B60</color>
+    <color name="reddishColorPrimary">#ED2224</color>
+    <color name="reddishColorPrimaryDark">#780116</color>
+    <color name="reddishColorAccent">#F7B538</color>
 </resources>
